@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjali Rai & Hanish - Royal Wedding Invitation</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind Custom Peacock & Gold Palette Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        peacock: {
+                            50: '#f0f5fc',
+                            100: '#e1eef9',
+                            700: '#1d4ed8',
+                            800: '#1e3a5f',
+                            900: '#0f283e', // Deep Royal Peacock Blue
+                            950: '#081724',
+                        },
+                        gold: {
+                            100: '#fefce8',
+                            300: '#fef08a',
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#b45309',
+                        },
+                        ivory: {
+                            50: '#fcfbf7',
+                            100: '#f5f2eb',
+                            200: '#ebe6db',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        cinzel: ['"Cinzel Decorative"', 'serif'],
+                        script: ['"Alex Brush"', 'cursive'],
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fcfbf7;
+            color: #0f283e;
+            color: #eab308;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background-image: radial-gradient(#ca8a04 0.75px, transparent 0.75px), radial-gradient(#ca8a04 0.75px, #fcfbf7 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        /* Royal Gold Foil & Peacock Gradient Text */
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #b45309 0%, #facc15 50%, #ca8a04 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-peacock-gradient {
+            background: linear-gradient(135deg, #0f283e 0%, #1e3a5f 50%, #1d4ed8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Royal Glow Effects */
+        .royal-glow {
+            box-shadow: 0 10px 40px rgba(202, 138, 4, 0.25);
+        }
+
+        .peacock-glow {
+            box-shadow: 0 10px 40px rgba(15, 40, 62, 0.3);
+        }
+
+        /* Mandala Rotation */
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes rotateSlowReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        .spin-slow {
+            animation: rotateSlow 90s linear infinite;
+        }
+
+        .spin-slow-reverse {
+            animation: rotateSlowReverse 110s linear infinite;
+        }
+
+        /* Shimmer Effect for Buttons */
+        .btn-shimmer-gold {
+            background: linear-gradient(90deg, #ca8a04 0%, #fefce8 50%, #ca8a04 100%);
+            background-size: 200% 100%;
+            transition: all 0.3s ease;
+        }
+        .btn-shimmer-gold:hover {
+            background-position: 100% 0;
+            box-shadow: 0 0 25px rgba(202, 138, 4, 0.7);
+        }
+
+        .btn-shimmer-peacock {
+            background: linear-gradient(90deg, #1e3a5f 0%, #93c5fd 50%, #1e3a5f 100%);
+            background-size: 200% 100%;
+            transition: all 0.3s ease;
+        }
+        .btn-shimmer-peacock:hover {
+            background-position: 100% 0;
+            box-shadow: 0 0 25px rgba(15, 40, 62, 0.6);
+        }
+
+        /* Canvas Particle Overlay */
+        #sparkleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fcfbf7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e3a5f;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="relative selection:bg-gold-500 selection:text-white">
+
+    <!-- Sparkle Canvas Overlay -->
+    <canvas id="sparkleCanvas"></canvas>
+
+    <!-- Hidden Background Audio Player -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="song/song3.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Autoplay Prompt Banner -->
+    <div id="autoplayBanner" onclick="triggerPlayFromUserInteraction()" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-peacock-900 via-blue-950 to-peacock-900 text-gold-200 border-2 border-gold-400 px-6 py-2.5 rounded-full shadow-2xl flex items-center gap-3 text-xs md:text-sm font-semibold tracking-wide cursor-pointer animate-bounce hover:scale-105 transition-all">
+        <i class="fas fa-music text-gold-300 animate-pulse"></i>
+        <span>🎵 Tap anywhere to start playing Royal Music</span>
+        <i class="fas fa-play-circle text-gold-300 ml-1"></i>
+    </div>
+
+    <!-- Floating Audio Control Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button id="audioToggle" onclick="toggleAudio()" class="flex items-center gap-3 bg-peacock-900/90 hover:bg-peacock-950 text-gold-300 border-2 border-gold-400 px-4 py-3 rounded-full shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-105 peacock-glow">
+            <div id="soundWave" class="flex items-end gap-1 h-5 w-5">
+                <span class="w-1 bg-gold-300 rounded-full h-2 animate-pulse"></span>
+                <span class="w-1 bg-gold-300 rounded-full h-4 animate-pulse delay-100"></span>
+                <span class="w-1 bg-gold-300 rounded-full h-3 animate-pulse delay-200"></span>
+            </div>
+            <i id="audioIcon" class="fas fa-play text-gold-300 text-sm hidden"></i>
+            <div class="flex flex-col text-left">
+                <span id="audioStatus" class="text-[10px] tracking-widest font-serif font-bold uppercase text-gold-200">Playing Music</span>
+                <span class="text-xs font-semibold text-ivory-50">Royal Melody</span>
+            </div>
+        </button>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-ivory-100/95 backdrop-blur-md border-b-2 border-gold-400/50 py-3 px-6 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#hero" class="font-script text-3xl md:text-4xl text-peacock-900 font-bold tracking-wide">A & H</a>
+            <nav class="hidden md:flex space-x-8 text-xs tracking-widest font-serif uppercase font-bold text-peacock-900">
+                <a href="#couple" class="hover:text-gold-600 transition-colors">The Couple</a>
+                <a href="#events" class="hover:text-gold-600 transition-colors">Programme</a>
+                <a href="#story" class="hover:text-gold-600 transition-colors">Our Story</a>
+                <a href="#gallery" class="hover:text-gold-600 transition-colors">Photo Gallery</a>
+                <a href="#venue" class="hover:text-gold-600 transition-colors">Venue & Map</a>
+            </nav>
+            <a href="#venue" class="text-xs uppercase tracking-wider font-bold bg-gradient-to-r from-peacock-800 to-blue-700 text-ivory-50 px-5 py-2 rounded-full shadow-md hover:scale-105 transition-all border border-gold-400/60">Location</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 overflow-hidden border-b-2 border-gold-400/30">
+        
+        <!-- Rotating Background Mandalas -->
+        <div class="absolute inset-0 flex items-center justify-center opacity-25 pointer-events-none">
+            <svg class="w-[700px] h-[700px] md:w-[950px] md:h-[950px] text-gold-500 spin-slow" viewBox="0 0 500 500" fill="none" stroke="currentColor" stroke-width="1.2">
+                <circle cx="250" cy="250" r="230" stroke-dasharray="6,6" />
+                <circle cx="250" cy="250" r="195" />
+                <circle cx="250" cy="250" r="160" stroke-dasharray="4,4" />
+                <g id="petals">
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" fill="rgba(250, 204, 21, 0.05)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(30 250 250)" fill="rgba(250, 204, 21, 0.05)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(60 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(90 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(120 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(150 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(180 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(210 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(240 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(270 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(300 250 250)" />
+                    <path d="M250,20 Q280,120 250,220 Q220,120 250,20" transform="rotate(330 250 250)" />
+                </g>
+                <circle cx="250" cy="250" r="90" />
+            </svg>
+        </div>
+
+        <div class="absolute inset-0 flex items-center justify-center opacity-15 pointer-events-none">
+            <svg class="w-[500px] h-[500px] text-peacock-700 spin-slow-reverse" viewBox="0 0 300 300" fill="none" stroke="currentColor" stroke-width="1">
+                <polygon points="150,10 190,110 290,150 190,190 150,290 110,190 10,150 110,110" />
+                <polygon points="150,40 178,122 260,150 178,178 150,260 122,178 40,150 122,122" transform="rotate(22.5 150 150)" />
+            </svg>
+        </div>
+
+        <!-- Hero Card Content -->
+        <div class="relative z-20 max-w-4xl mx-auto text-center px-6 py-12 rounded-3xl bg-ivory-50/95 border-4 border-gold-500 shadow-2xl royal-glow">
+            
+            <!-- Auspicious Ganesha Emblem Header -->
+            <div class="mb-4 flex justify-center">
+                <div class="w-20 h-20 rounded-full border-2 border-gold-500 p-2 flex items-center justify-center bg-gradient-to-br from-peacock-900 to-blue-900 text-gold-300 shadow-lg">
+                    <svg class="w-12 h-12 text-gold-300" viewBox="0 0 100 100" fill="currentColor">
+                        <path d="M50 10 C 42 10, 35 15, 35 25 C 35 30, 38 35, 42 38 C 30 42, 20 52, 20 68 C 20 80, 32 90, 50 90 C 68 90, 80 80, 80 68 C 80 52, 70 42, 58 38 C 62 35, 65 30, 65 25 C 65 15, 58 10, 50 10 Z M 50 18 C 54 18, 58 21, 58 25 C 58 29, 54 32, 50 32 C 46 32, 42 29, 42 25 C 42 21, 46 18, 50 18 Z M 35 50 C 35 45, 42 42, 50 42 C 58 42, 65 45, 65 50 C 65 52, 63 53, 60 53 C 58 53, 56 51, 50 51 C 44 51, 42 53, 40 53 C 37 53, 35 52, 35 50 Z" />
+                        <circle cx="50" cy="25" r="3" fill="#facc15"/>
+                        <path d="M48 60 Q50 75 62 70" stroke="#facc15" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <p class="text-xs md:text-sm tracking-[0.3em] font-serif uppercase font-bold text-peacock-900 mb-2">|| श्री गणेशाय नमः ||</p>
+            <p class="text-sm md:text-base font-serif italic text-peacock-800 font-medium mb-6">Together with their families, cordially invite you to celebrate the joyous royal wedding of</p>
+
+            <!-- Couple Names -->
+            <div class="my-6">
+                <h1 class="font-script text-6xl md:text-8xl text-peacock-gradient font-bold drop-shadow-md py-1">
+                    Anjali Rai
+                </h1>
+                <div class="flex items-center justify-center gap-4 my-3">
+                    <span class="h-[2px] w-16 md:w-28 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></span>
+                    <span class="font-cinzel text-2xl md:text-3xl text-gold-600 font-bold italic">&</span>
+                    <span class="h-[2px] w-16 md:w-28 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></span>
+                </div>
+                <h1 class="font-script text-6xl md:text-8xl text-peacock-gradient font-bold drop-shadow-md py-1">
+                    Hanish
+                </h1>
+            </div>
+
+            <!-- Date & Location Brief -->
+            <div class="mt-8 pt-6 border-t-2 border-gold-400/40 max-w-md mx-auto">
+                <p class="font-serif text-lg md:text-2xl text-peacock-900 font-bold tracking-wide">
+                    <i class="far fa-calendar-alt text-gold-600 mr-2"></i> 19th - 21st November 2026
+                </p>
+                <p class="text-sm md:text-base text-peacock-900 mt-2 font-serif font-medium">
+                    <i class="fas fa-map-marker-alt text-gold-600 mr-1"></i> Eldeco Estate One, Panipat
+                </p>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="mt-10">
+                <p class="text-xs uppercase tracking-[0.25em] font-serif font-bold text-peacock-900 mb-4">Counting Down to the Royal Ceremony</p>
+                <div id="countdown" class="grid grid-cols-4 gap-3 max-w-lg mx-auto">
+                    <div class="bg-gradient-to-b from-peacock-900 to-peacock-950 text-ivory-50 border-2 border-gold-400 rounded-xl p-3 shadow-md">
+                        <span id="days" class="font-serif text-2xl md:text-4xl text-gold-300 font-bold block">00</span>
+                        <span class="text-[10px] md:text-xs uppercase tracking-wider text-gold-100 font-semibold">Days</span>
+                    </div>
+                    <div class="bg-gradient-to-b from-peacock-900 to-peacock-950 text-ivory-50 border-2 border-gold-400 rounded-xl p-3 shadow-md">
+                        <span id="hours" class="font-serif text-2xl md:text-4xl text-gold-300 font-bold block">00</span>
+                        <span class="text-[10px] md:text-xs uppercase tracking-wider text-gold-100 font-semibold">Hours</span>
+                    </div>
+                    <div class="bg-gradient-to-b from-peacock-900 to-peacock-950 text-ivory-50 border-2 border-gold-400 rounded-xl p-3 shadow-md">
+                        <span id="minutes" class="font-serif text-2xl md:text-4xl text-gold-300 font-bold block">00</span>
+                        <span class="text-[10px] md:text-xs uppercase tracking-wider text-gold-100 font-semibold">Mins</span>
+                    </div>
+                    <div class="bg-gradient-to-b from-peacock-900 to-peacock-950 text-ivory-50 border-2 border-gold-400 rounded-xl p-3 shadow-md">
+                        <span id="seconds" class="font-serif text-2xl md:text-4xl text-gold-300 font-bold block">00</span>
+                        <span class="text-[10px] md:text-xs uppercase tracking-wider text-gold-100 font-semibold">Secs</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add to Calendar Actions -->
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <button onclick="addToGoogleCalendar()" class="btn-shimmer-peacock text-ivory-50 font-bold px-6 py-3 rounded-full text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg border border-gold-400/60 hover:scale-105 transition-transform">
+                    <i class="fab fa-google text-gold-300"></i> Add to Google Calendar
+                </button>
+                <button onclick="downloadICS()" class="border-2 border-peacock-800 text-peacock-900 hover:bg-peacock-900 hover:text-white font-bold px-6 py-3 rounded-full text-xs uppercase tracking-wider flex items-center gap-2 transition-all">
+                    <i class="fas fa-calendar-plus text-gold-600"></i> Download .ics Invite
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Couple Section -->
+    <section id="couple" class="py-20 px-4 max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="font-cinzel text-3xl md:text-4xl text-peacock-900 font-bold">Two Hearts, One Royal Promise</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-gold-400 via-peacock-600 to-gold-400 mx-auto my-3 rounded-full"></div>
+            <p class="font-serif italic text-peacock-800 text-base max-w-xl mx-auto">
+                "Blessed by family, bound by royal love, and embarking on an eternal sacred journey together."
+            </p>
+        </div>
+
+        <!-- Added items-stretch to make both grid tiles equal height -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            <!-- Bride Profile Box -->
+            <div class="bg-ivory-50/90 border-2 border-gold-500 rounded-2xl p-8 text-center relative overflow-hidden group hover:border-peacock-800 transition-all royal-glow flex flex-col justify-between">
+                <div>
+                    <div class="w-28 h-28 mx-auto mb-4 rounded-full border-2 border-gold-500 p-1 overflow-hidden bg-gradient-to-br from-peacock-900 to-blue-800 shadow-md">
+                        <img src="photos/dp_Female.jpg" alt="Anjali Rai" class="w-full h-full object-cover rounded-full">
+                    </div>
+                    <h3 class="font-script text-5xl text-peacock-900 font-bold mb-1">Anjali Rai</h3>
+                    <p class="text-xs uppercase tracking-widest text-gold-700 font-bold font-serif mb-4">The Bride</p>
+                    <p class="text-sm text-peacock-950 font-light leading-relaxed">
+                        Curious, passionate, and fiercely independent, she always forged her own path. <br>
+                        From university topper to representing India internationally in yoga, she gave her all to what she loved, building a vibrant life of her own. <br>
+                        She never expected that while shaping her destiny, life was quietly preparing someone to make her journey even more beautiful.<br>
+                        And then, she met him. ❤️
+                    </p>
+                </div>
+            </div>
+
+            <!-- Groom Profile Box -->
+            <div class="bg-ivory-50/90 border-2 border-gold-500 rounded-2xl p-8 text-center relative overflow-hidden group hover:border-peacock-800 transition-all royal-glow flex flex-col justify-between">
+                <div>
+                    <div class="w-28 h-28 mx-auto mb-4 rounded-full border-2 border-gold-500 p-1 overflow-hidden bg-gradient-to-br from-peacock-900 to-blue-800 shadow-md">
+                        <img src="photos/dp_male.jpeg" alt="Hanish" class="w-full h-full object-cover rounded-full">
+                    </div>
+                    <h3 class="font-script text-5xl text-peacock-900 font-bold mb-1">Hanish</h3>
+                    <p class="text-xs uppercase tracking-widest text-gold-700 font-bold font-serif mb-4">The Groom</p>
+                    <p class="text-sm text-peacock-950 font-light leading-relaxed">
+                        He was an engineer who dreamt of becoming an officer, a footballer who played with his whole heart, and a man who never really stopped working towards what he wanted.
+                        <br>
+                        Disciplined, ambitious, calm and quietly determined — he built his life one dream at a time.
+                        <br>
+                        He had his own world, his own goals and his own journey.
+                        <br>
+                        Until life decided to add her to it. ❤️
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Events Itinerary Section -->
+    <section id="events" class="py-20 px-4 bg-ivory-200/50 border-y-2 border-gold-400/40 relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <p class="text-xs font-serif uppercase tracking-[0.3em] font-bold text-peacock-900 mb-2">Sacred Matrimony Schedule</p>
+                <h2 class="font-cinzel text-3xl md:text-5xl text-peacock-900 font-bold">Programme</h2>
+                <div class="w-28 h-1 bg-gradient-to-r from-gold-400 via-peacock-600 to-gold-400 mx-auto my-3 rounded-full"></div>
+            </div>
+
+            <!-- Event Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Day 1: Haldi Ceremony -->
+                <div class="bg-ivory-50 border-2 border-gold-500 rounded-3xl p-6 text-center relative shadow-xl royal-glow flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-peacock-900 to-blue-900 border-2 border-gold-400 flex items-center justify-center text-gold-300 text-2xl shadow-md">
+                            <i class="fas fa-sun"></i>
+                        </div>
+
+                        <span class="text-xs font-serif uppercase tracking-widest font-bold text-gold-700">Day 1</span>
+                        <h3 class="font-cinzel text-xl md:text-2xl text-peacock-900 font-bold mt-1 mb-2">Haldi Ceremony</h3>
+                        <div class="w-16 h-0.5 bg-gold-500/85 mx-auto mb-3"></div>
+                        
+                        <p class="text-sm text-peacock-900 font-serif font-bold mb-1">
+                            <i class="far fa-calendar-alt text-gold-600 mr-1.5"></i> Thursday, 19th Nov 2026
+                        </p>
+                        <p class="text-sm text-peacock-800 font-serif font-semibold mb-3">
+                            <i class="fas fa-clock text-gold-600 mr-1.5"></i> 10:00 A.M.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-gold-300/40 text-xs text-peacock-800 font-serif italic">
+                        The auspicious turmeric ritual filled with warmth & blessings.
+                    </div>
+                </div>
+
+                <!-- Day 2: Mehendi & Ladies Sangeet -->
+                <div class="bg-ivory-50 border-2 border-gold-500 rounded-3xl p-6 text-center relative shadow-xl royal-glow flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-peacock-900 to-blue-900 border-2 border-gold-400 flex items-center justify-center text-gold-300 text-2xl shadow-md">
+                            <i class="fas fa-music"></i>
+                        </div>
+
+                        <span class="text-xs font-serif uppercase tracking-widest font-bold text-gold-700">Day 2</span>
+                        <h3 class="font-cinzel text-xl md:text-2xl text-peacock-900 font-bold mt-1 mb-2">Mehendi & Ladies Sangeet</h3>
+                        <div class="w-16 h-0.5 bg-gold-500/85 mx-auto mb-3"></div>
+                        
+                        <p class="text-sm text-peacock-900 font-serif font-bold mb-1">
+                            <i class="far fa-calendar-alt text-gold-600 mr-1.5"></i> Friday, 20th Nov 2026
+                        </p>
+                        <p class="text-sm text-peacock-800 font-serif font-semibold mb-3">
+                            <i class="fas fa-clock text-gold-600 mr-1.5"></i> 8:00 P.M.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-gold-300/40 text-xs text-peacock-800 font-serif italic">
+                        An evening of henna, music, dance, and festive joy.
+                    </div>
+                </div>
+
+                <!-- Day 3: Wedding Ceremony & Reception -->
+                <div class="bg-ivory-50 border-2 border-gold-500 rounded-3xl p-6 text-center relative shadow-xl royal-glow flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-peacock-900 to-blue-900 border-2 border-gold-400 flex items-center justify-center text-gold-300 text-2xl shadow-md">
+                            <i class="fas fa-crown"></i>
+                        </div>
+
+                        <span class="text-xs font-serif uppercase tracking-widest font-bold text-gold-700">Day 3 • Main Event</span>
+                        <h3 class="font-cinzel text-xl md:text-2xl text-peacock-900 font-bold mt-1 mb-2">Wedding Day</h3>
+                        <div class="w-16 h-0.5 bg-gold-500/85 mx-auto mb-3"></div>
+                        
+                        <p class="text-sm text-peacock-900 font-serif font-bold mb-1">
+                            <i class="far fa-calendar-alt text-gold-600 mr-1.5"></i> Saturday, 21st Nov 2026
+                        </p>
+                        
+                        <ul class="text-xs text-peacock-950 text-left my-3 space-y-1.5 font-medium bg-ivory-100/80 p-3 rounded-xl border border-gold-300/50">
+                            <li class="flex justify-between items-center">
+                                <span><i class="fas fa-glass-cheers text-gold-600 mr-1"></i> Reception of Barat:</span>
+                                <span class="font-bold text-peacock-900">7:00 P.M.</span>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span><i class="fas fa-utensils text-gold-600 mr-1"></i> Varmala:</span>
+                                <span class="font-bold text-peacock-900">8:00 P.M.</span>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span><i class="fas fa-utensils text-gold-600 mr-1"></i> Dinner:</span>
+                                <span class="font-bold text-peacock-900">9:00 P.M.</span>
+                            </li>                            
+                        </ul>
+                    </div>
+                    <div class="pt-2 border-t border-gold-300/40 text-xs text-peacock-800 font-serif italic">
+                        The sacred union of two hearts blessed with timeless love and eternal vows.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story" class="py-20 px-4 max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+            <p class="text-xs font-serif uppercase tracking-[0.3em] font-bold text-peacock-900 mb-2">Destined Pathways</p>
+            <h2 class="font-cinzel text-3xl md:text-5xl text-peacock-900 font-bold">Our Story</h2>
+            <div class="w-28 h-1 bg-gradient-to-r from-gold-400 via-peacock-600 to-gold-400 mx-auto my-3 rounded-full"></div>
+        </div>
+
+        <div class="bg-ivory-50 border-2 border-gold-500 rounded-3xl p-8 md:p-12 shadow-2xl royal-glow relative overflow-hidden">
+            <div class="absolute top-4 left-4 text-gold-500/20 text-4xl font-serif">“</div>
+            <div class="absolute bottom-4 right-4 text-gold-500/20 text-4xl font-serif">”</div>
+
+            <div class="space-y-6 font-serif text-peacock-950 text-base md:text-lg leading-relaxed text-center px-4">
+                <p>
+                    And then, there was us.
+                    Two people who were busy becoming who they wanted to be somehow found each other.
+                </p>
+                <p>
+                    We didn't meet with a plan to write a forever. We just started talking, became friends, became each other's people… and somewhere between the conversations, the waiting, the distance and all those little moments, we fell in love.
+                    We never asked each other to dream smaller. Instead, we stood beside each other and kept saying, “Go, I’ve got you.”
+                    Maybe that's what made us work.
+                </p>
+                <p>
+                    Two different personalities. Two different journeys. Two people deeply passionate about their own lives — and somehow, the right kind of love made space for both.
+                    And through every little coincidence, every prayer and every blessing, we kept feeling that Shiva had a little something to do with our story. 🔱
+                </p>
+                <p>
+                    Today, those two separate journeys are becoming one.
+                    On *21st November*, with Shiva's blessings, we aren't just getting married.
+                    We're choosing to build the rest of our lives together.
+                </p>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gold-300/50 text-center">
+                <p class="font-script text-3xl md:text-4xl text-peacock-800 font-bold">
+                    He had his dreams. She had hers. And somehow, God made them meet. ❤️
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Carousel Section -->
+    <section id="gallery" class="py-20 px-4 max-w-6xl mx-auto overflow-hidden">
+        <div class="text-center mb-12">
+            <p class="text-xs font-serif uppercase tracking-[0.3em] font-bold text-peacock-900 mb-2">Cherished Moments</p>
+            <h2 class="font-cinzel text-3xl md:text-5xl text-peacock-900 font-bold">Photo Gallery</h2>
+            <div class="w-28 h-1 bg-gradient-to-r from-gold-400 via-peacock-600 to-gold-400 mx-auto my-3 rounded-full"></div>
+            <p class="font-serif italic text-peacock-800 text-base max-w-xl mx-auto">
+                A royal glimpse into our journey of love, laughter, and togetherness.
+            </p>
+        </div>
+
+        <!-- Carousel Container -->
+        <div class="relative max-w-5xl mx-auto flex items-center justify-center">
+            
+            <!-- Left Arrow Button -->
+            <button onclick="prevPhoto()" class="absolute left-2 sm:-left-6 z-30 bg-peacock-900/90 hover:bg-peacock-950 text-gold-300 border-2 border-gold-400 w-12 h-12 rounded-full flex items-center justify-center shadow-xl backdrop-blur-md transition-all hover:scale-110">
+                <i class="fas fa-chevron-left text-lg"></i>
+            </button>
+
+            <!-- Carousel Track Viewport -->
+            <div class="w-full flex items-center justify-center overflow-hidden py-6 px-2">
+                <div id="carouselTrack" class="flex items-center justify-center gap-4 md:gap-6 transition-all duration-500 ease-in-out">
+                    <!-- Dynamic Items Injected via Script -->
+                </div>
+            </div>
+
+            <!-- Right Arrow Button -->
+            <button onclick="nextPhoto()" class="absolute right-2 sm:-right-6 z-30 bg-peacock-900/90 hover:bg-peacock-950 text-gold-300 border-2 border-gold-400 w-12 h-12 rounded-full flex items-center justify-center shadow-xl backdrop-blur-md transition-all hover:scale-110">
+                <i class="fas fa-chevron-right text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Carousel Indicators / Dots -->
+        <div id="carouselDots" class="flex justify-center items-center gap-2 mt-6">
+            <!-- Dots generated dynamically -->
+        </div>
+    </section>
+
+    <!-- Venue & Location Section -->
+    <section id="venue" class="py-20 px-4 max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+            <p class="text-xs font-serif uppercase tracking-[0.3em] font-bold text-peacock-900 mb-2">Location & Direction</p>
+            <h2 class="font-cinzel text-3xl md:text-5xl text-peacock-900 font-bold">The Royal Venue</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-gold-400 via-peacock-600 to-gold-400 mx-auto my-3 rounded-full"></div>
+            <p class="text-xl text-peacock-900 font-serif font-bold mt-2">Eldeco Estate One</p>
+            <p class="text-sm text-peacock-800">Near Babarpur Mandi, Panipat (Haryana)</p>
+        </div>
+
+        <div class="bg-ivory-50 border-2 border-gold-500 rounded-3xl p-4 md:p-6 shadow-2xl royal-glow overflow-hidden">
+            <!-- Embedded Google Map -->
+            <div class="w-full h-96 rounded-2xl overflow-hidden border-2 border-gold-400 shadow-inner">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3474.296293214219!2d76.97324342617878!3d29.449357196519166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390dd9bcde8e12fb%3A0x28653c3db7968543!2sEldeco%20Estate%2C%20Baberpur%20Mandi%2C%20Panipat%2C%20Haryana%20132104!5e0!3m2!1sen!2sin!4v1791929785625!5m2!1sen!2sin" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="strict-origin-when-cross-origin">
+                </iframe>
+            </div>
+
+            <!-- Directions Button -->
+            <div class="mt-6 flex flex-col md:flex-row items-center justify-between gap-4 px-2">
+                <div class="text-left">
+                    <p class="text-xs uppercase tracking-widest text-gold-700 font-bold font-serif">Destination Address</p>
+                    <p class="text-sm text-peacock-900 font-semibold">Eldeco Estate One, Near Babarpur Mandi, Panipat, Haryana</p>
+                </div>
+                <a href="https://maps.app.goo.gl/6Fz4xsruR26EDFdt9" target="_blank" rel="noopener noreferrer" class="btn-shimmer-peacock text-ivory-50 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform w-full md:w-auto justify-center shadow-md border border-gold-400/60">
+                    <i class="fas fa-directions text-base text-gold-300"></i> Get Directions in Google Maps
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t-2 border-gold-500/40 text-center bg-peacock-950 text-ivory-100 text-xs">
+        <div class="max-w-4xl mx-auto px-4">
+            <h4 class="font-script text-4xl text-gold-300 mb-2">Anjali Rai & Hanish</h4>
+            <p class="font-serif tracking-widest uppercase text-[10px] text-gold-200 mb-4">19th - 21st November 2026 • Eldeco Estate One, Panipat</p>
+            <div class="w-20 h-0.5 bg-gold-500/40 mx-auto mb-4"></div>
+            <p>© 2026 With Royal Blessings from the Rai Family</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const audio = document.getElementById("bgAudio");
+        const autoplayBanner = document.getElementById("autoplayBanner");
+        const soundWave = document.getElementById("soundWave");
+        const audioIcon = document.getElementById("audioIcon");
+        const audioStatus = document.getElementById("audioStatus");
+
+        let isPlaying = false;
+
+        function updateAudioUI(playing) {
+            isPlaying = playing;
+            if (playing) {
+                soundWave.classList.remove("hidden");
+                audioIcon.classList.add("hidden");
+                audioStatus.innerText = "Playing Music";
+                autoplayBanner.classList.add("hidden");
+            } else {
+                soundWave.classList.add("hidden");
+                audioIcon.classList.remove("hidden");
+                audioStatus.innerText = "Paused";
+            }
+        }
+
+        function attemptAutoplay() {
+            if (!audio) return;
+            audio.volume = 0.85;
+            
+            const promise = audio.play();
+            if (promise !== undefined) {
+                promise.then(() => {
+                    updateAudioUI(true);
+                }).catch(error => {
+                    updateAudioUI(false);
+                    autoplayBanner.classList.remove("hidden");
+                    attachGlobalInteractionListeners();
+                });
+            }
+        }
+
+        function triggerPlayFromUserInteraction() {
+            if (audio && !isPlaying) {
+                audio.play().then(() => {
+                    updateAudioUI(true);
+                    removeGlobalInteractionListeners();
+                }).catch(e => console.log("Play interrupted", e));
+            }
+        }
+
+        function handleGlobalClick() {
+            triggerPlayFromUserInteraction();
+        }
+
+        function attachGlobalInteractionListeners() {
+            window.addEventListener('click', handleGlobalClick, { once: true });
+            window.addEventListener('touchstart', handleGlobalClick, { once: true });
+            window.addEventListener('pointerdown', handleGlobalClick, { once: true });
+            window.addEventListener('keydown', handleGlobalClick, { once: true });
+            window.addEventListener('scroll', handleGlobalClick, { once: true });
+        }
+
+        function removeGlobalInteractionListeners() {
+            window.removeEventListener('click', handleGlobalClick);
+            window.removeEventListener('touchstart', handleGlobalClick);
+            window.removeEventListener('pointerdown', handleGlobalClick);
+            window.removeEventListener('keydown', handleGlobalClick);
+            window.removeEventListener('scroll', handleGlobalClick);
+        }
+
+        function toggleAudio() {
+            if (!audio) return;
+            if (audio.paused) {
+                audio.play().then(() => {
+                    updateAudioUI(true);
+                });
+            } else {
+                audio.pause();
+                updateAudioUI(false);
+            }
+        }
+
+        // --- Photo Gallery Carousel Logic ---
+        const galleryPhotos = [
+            { src: "photos/2.jpeg", caption: "" },
+            { src: "photos/1.jpg", caption: "" },
+            { src: "photos/3.jpg", caption: "" },
+            { src: "photos/5.jpg", caption: "" },
+            { src: "photos/6.jpg", caption: "" },
+            { src: "photos/7.jpg", caption: "" },
+            { src: "photos/8.jpg", caption: "" },
+            { src: "photos/4.jpeg", caption: "" },
+            { src: "photos/10.jpeg", caption: "" },
+            { src: "photos/12.jpeg", caption: "" },
+            { src: "photos/14.jpeg", caption: "" },
+            { src: "photos/16.jpeg", caption: "" },
+            { src: "photos/17.jpeg", caption: "" },
+            { src: "photos/18.jpeg", caption: "" },
+            { src: "photos/19.jpeg", caption: "" }
+        ];
+
+        let currentIndex = 0;
+
+        function renderGallery() {
+            const track = document.getElementById("carouselTrack");
+            const dotsContainer = document.getElementById("carouselDots");
+            track.innerHTML = "";
+            dotsContainer.innerHTML = "";
+
+            const total = galleryPhotos.length;
+
+            const prevIndex = (currentIndex - 1 + total) % total;
+            const nextIndex = (currentIndex + 1) % total;
+
+            const visibleIndices = [prevIndex, currentIndex, nextIndex];
+
+            visibleIndices.forEach((idx, position) => {
+                const photo = galleryPhotos[idx];
+                const isCenter = position === 1;
+
+                const itemDiv = document.createElement("div");
+                
+                if (isCenter) {
+                    itemDiv.className = "relative z-20 transition-all duration-500 ease-in-out transform scale-100 opacity-100 w-[280px] sm:w-[420px] md:w-[500px] aspect-[4/3] rounded-3xl border-4 border-gold-500 bg-ivory-50 shadow-2xl royal-glow overflow-hidden shrink-0 cursor-pointer";
+                    itemDiv.innerHTML = `
+                        <img src="${photo.src}" alt="${photo.caption}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-peacock-950/80 via-transparent flex items-end p-6">
+                            <p class="text-ivory-50 font-serif italic text-base md:text-lg font-medium drop-shadow"><i class="fas fa-heart text-gold-300 mr-2"></i> ${photo.caption}</p>
+                        </div>
+                    `;
+                    itemDiv.onclick = () => { currentIndex = idx; renderGallery(); };
+                } else {
+                    itemDiv.className = "relative z-10 transition-all duration-500 ease-in-out transform scale-90 opacity-40 hover:opacity-60 w-[180px] sm:w-[260px] md:w-[300px] aspect-[4/3] rounded-2xl border-2 border-gold-400 bg-ivory-50 shadow-md overflow-hidden shrink-0 cursor-pointer hidden sm:block";
+                    itemDiv.innerHTML = `
+                        <img src="${photo.src}" alt="${photo.caption}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-peacock-950/35"></div>
+                    `;
+                    itemDiv.onclick = () => { currentIndex = idx; renderGallery(); };
+                }
+
+                track.appendChild(itemDiv);
+            });
+
+            galleryPhotos.forEach((_, i) => {
+                const dot = document.createElement("button");
+                dot.className = `h-2.5 rounded-full transition-all duration-300 ${i === currentIndex ? 'w-8 bg-gold-500' : 'w-2.5 bg-peacock-900/30 hover:bg-peacock-900'}`;
+                dot.onclick = () => {
+                    currentIndex = i;
+                    renderGallery();
+                };
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function nextPhoto() {
+            currentIndex = (currentIndex + 1) % galleryPhotos.length;
+            renderGallery();
+        }
+
+        function prevPhoto() {
+            currentIndex = (currentIndex - 1 + galleryPhotos.length) % galleryPhotos.length;
+            renderGallery();
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            renderGallery();
+        });
+
+        // Countdown Timer Logic
+        const weddingDate = new Date("November 21, 2026 19:00:00 GMT+0530").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "<div class='col-span-4 text-peacock-900 font-cinzel text-xl font-bold'>The Royal Wedding Celebrations Have Begun!</div>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? '0' + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Canvas Golden Sparkle Animation
+        const canvas = document.getElementById("sparkleCanvas");
+        const ctx = canvas.getContext("2d");
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        const sparkles = [];
+        const sparkleCount = 45;
+
+        for (let i = 0; i < sparkleCount; i++) {
+            sparkles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2.5 + 0.5,
+                alpha: Math.random(),
+                speedY: Math.random() * 0.4 + 0.1,
+                speedX: (Math.random() - 0.5) * 0.2
+            });
+        }
+
+        function animateSparkles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            sparkles.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(202, 138, 4, ${s.alpha})`;
+                ctx.fill();
+
+                s.y -= s.speedY;
+                s.x += s.speedX;
+                s.alpha += (Math.random() - 0.5) * 0.02;
+
+                if (s.alpha < 0.1) s.alpha = 0.1;
+                if (s.alpha > 0.9) s.alpha = 0.9;
+
+                if (s.y < 0) {
+                    s.y = canvas.height;
+                    s.x = Math.random() * canvas.width;
+                }
+            });
+
+            requestAnimationFrame(animateSparkles);
+        }
+        animateSparkles();
+
+        function addToGoogleCalendar() {
+            const title = encodeURIComponent("Anjali Rai weds Hanish - Royal Wedding Celebrations");
+            const details = encodeURIComponent("Join us in celebrating the royal wedding of Anjali Rai and Hanish. Events run from Nov 19 to Nov 21, 2026 at Eldeco Estate One, Panipat.");
+            const location = encodeURIComponent("Eldeco Estate One, Near Babarpur Mandi, Panipat, Haryana 132104");
+            const startTime = "20261119T043000Z"; 
+            const endTime = "20261121T203000Z";
+
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startTime}/${endTime}&details=${details}&location=${location}`;
+            window.open(calendarUrl, '_blank');
+        }
+
+        function downloadICS() {
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Royal Wedding Invitation//Anjali and Hanish//EN
+BEGIN:VEVENT
+SUMMARY:Anjali Rai weds Hanish - Royal Wedding Celebrations
+DESCRIPTION:Join us for the royal wedding celebration of Anjali Rai & Hanish at Eldeco Estate One, Panipat.
+LOCATION:Eldeco Estate One, Near Babarpur Mandi, Panipat, Haryana 132104
+DTSTART:20261119T043000Z
+DTEND:20261121T203000Z
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', 'Anjali_Hanish_Royal_Wedding.ics');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            attemptAutoplay();
+        });
+
+        window.addEventListener("load", () => {
+            attemptAutoplay();
+        });
+    </script>
+</body>
+</html>
